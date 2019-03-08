@@ -1,28 +1,39 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div id="nav">
+      <router-link to="/">Home</router-link> |
+      <router-link to="/about">About</router-link> |
+      <router-link v-if="loggedIn" to="/logout">Logout</router-link>
+      <router-link v-else to="/login" exact>Login</router-link> |
+      <router-link to="/posts">Posts</router-link>  |
+      <router-link to="/posts/new" exact>New Post</router-link>  |
+    
+    </div>
+    <router-view/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import {Auth} from './api'
 export default {
   name: 'app',
-  components: {
-    HelloWorld
+  data() {
+    return {
+      loggedIn: Auth.loggedIn()
+    }
+  },
+  created() {
+    Auth.onChange = loggedIn => {
+      //console.log('onchage', loggedIn)
+      this.loggedIn = loggedIn
+    }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.router-link-exact-active  {
+  color: white;
+  background-color: blue;
 }
 </style>
